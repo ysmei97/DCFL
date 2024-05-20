@@ -1,4 +1,4 @@
-## Continual Federated Learning with Diffusion
+## Continual Federated Learning with Conditional Diffusion Models as Replay
 
 NeurIPS 2024, Submission 5599
 
@@ -8,7 +8,7 @@ NeurIPS 2024, Submission 5599
 
 ![overview](Fig/CFL_Scenarios.png)
 
-## Continual Federated Learning with Conditional Diffusion Models as Replay
+## Our Framework
 
 ![overview](Fig/FL_Diffusion.png)
 
