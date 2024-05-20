@@ -155,8 +155,7 @@ class CFL_CD():
         for ite in range(self.iterations):
             session = (ite // (self.iterations//self.sessions)) % self.sessions
             if ite % (self.iterations//self.sessions) == (self.iterations//self.sessions)-1:
-                # for client in self.client_data_train:
-                for client in list(client_data_train.keys())[:1]:
+                for client in self.client_data_train:
                     if ite >= (self.iterations//self.sessions): 
                         client_dataset = [torch.cat((client_data_train[client][session][i], synthetic_dataset[client][i]), dim=0) for i in range(2)]
                         diffusion_models[client] = self.train_diffusion_model(copy.deepcopy(diffusion_models[client]), client_dataset)      
@@ -166,8 +165,7 @@ class CFL_CD():
             if ite % (self.iterations//self.sessions) == 0:
                 combined_client_data = {} 
                 synthetic_dataset = {}
-                # for client in self.client_data_train:
-                for client in list(client_data_train.keys())[:1]:
+                for client in self.client_data_train:
                     if ite >= (self.iterations//self.sessions): 
                         appeared_labels = torch.cat([torch.unique(client_data_train[client][i][1]) for i in range(session)], dim=0)
                         synthetic_data, synthetic_label = self.generate_synthetic_data(diffusion_models[client], amount=len(client_data_train[client][session][0]), condition_labels=appeared_labels)
@@ -178,8 +176,7 @@ class CFL_CD():
                         combined_client_data[client] = client_data_train[client][session]
     
             client_models = []
-            # for client in self.client_data_train:
-            for client in list(client_data_train.keys())[:1]:
+            for client in self.client_data_train:
                 client_model, avg_loss, accuracy = self.train_client(combined_client_data[client], global_model)
                 client_models.append(client_model.state_dict())
     
@@ -213,7 +210,6 @@ class CFL_CD():
             session = (ite // (self.iterations//self.sessions)) % self.sessions
             if ite % (self.iterations//self.sessions) == (self.iterations//self.sessions)-1 and ite != self.iterations-1:
                 for client in self.client_data_train:
-                # for client in list(client_data_train.keys())[:3]:
                     if ite >= (self.iterations//self.sessions): 
                         train_data, train_labels = client_data_train[client][session]
                         synthetic_data, synthetic_labels = synthetic_dataset[client]
@@ -235,7 +231,6 @@ class CFL_CD():
                 combined_client_data = {} 
                 synthetic_dataset = {}
                 for client in self.client_data_train:
-                # for client in list(client_data_train.keys())[:3]:
                     if ite >= (self.iterations//self.sessions): 
                         appeared_labels = torch.cat([torch.unique(client_data_train[client][i][1]) for i in range(session)], dim=0)
                         synthetic_data, synthetic_label = self.generate_synthetic_data_domian(session, diffusion_models[client], amount=len(client_data_train[client][session][0]), condition_labels=appeared_labels)
@@ -248,7 +243,6 @@ class CFL_CD():
     
             client_models = []
             for client in self.client_data_train:
-            # for client in list(client_data_train.keys())[:3]:
                 client_model, avg_loss, accuracy = self.train_client(combined_client_data[client], global_model)
                 client_models.append(client_model.state_dict())
     
