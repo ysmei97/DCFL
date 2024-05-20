@@ -10,7 +10,7 @@ NeurIPS 2024, Submission 5599
 
 -----------------------------------------------------------------------------------------------
 
-## Three Continual Federated Learning Scenarios
+## ♻️ Three Continual Federated Learning Scenarios
 
 ![overview](Fig/CFL_Scenarios.png)
 
