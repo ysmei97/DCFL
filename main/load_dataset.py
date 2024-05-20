@@ -60,39 +60,6 @@ class CustomSubset(Subset):
     def __init__(self, dataset, indices):
         super().__init__(dataset, indices)
         self.classes = dataset.classes
-        
-def check_for_image_reuse(client_data_train):
-    image_usage_counts = {}
-    for client_id in client_data_train:
-        for time_id in range(len(client_data_train[client_id])):
-            data, labels = client_data_train[client_id][time_id]
-            indices = torch.arange(len(labels))
-            for index in indices:
-                image_id = labels[index].item()
-                if image_id not in image_usage_counts:
-                    image_usage_counts[image_id] = 0
-                image_usage_counts[image_id] += 1
-    reused_images = {image_id: count for image_id, count in image_usage_counts.items() if count > 1}
-    if reused_images:
-        print("Some images are reused among clients:")
-        for image_id, count in reused_images.items():
-            print(f"Image ID {image_id} is used {count} times.")
-    else:
-        print("No image reuse detected. All images are uniquely assigned.")
-
-
-def print_class_distribution(datasets_train):
-    for domain, dataset in datasets_train.items():
-        data_loader = DataLoader(dataset, batch_size=len(dataset), shuffle=False)
-        _, targets = next(iter(data_loader))
-        class_counts = defaultdict(int)
-        for label in targets:
-            class_counts[label.item()] += 1
-        print(f"\nDomain: {domain}")
-        class_idx_count = ''
-        for class_idx, count in sorted(class_counts.items()):
-            class_idx_count = class_idx_count + f"Class {class_idx}: {count}, "
-        print(class_idx_count)
 
 def Domain_IID(datasets_train, dataset_test, dataset_test_domain, num_clients=10):
     domains = list(datasets_train.keys())
@@ -130,45 +97,6 @@ def Domain_IID(datasets_train, dataset_test, dataset_test_domain, num_clients=10
         total_samples = sum(len(client_data_train[client][i][0]) for client in client_data_train)
         print(f"Total samples across all clients and time_ids: {total_samples}")
     return client_data_train, client_data_test, client_data_test_domain
-
-def Domain_NonIID(datasets_train, dataset_test, num_clients=10):
-    domains = list(datasets_train.keys())
-    client_data_train = {i: [] for i in range(num_clients)}
-    used_indices = {domain: set() for domain in domains}
-
-    def get_class_ids(client_id, num_classes):
-        return [(client_id * 2 + i) % num_classes for i in range(2)]
-
-    for domain in domains:
-        data_loader = DataLoader(datasets_train[domain], batch_size=len(datasets_train[domain]), shuffle=True)
-        x_train, y_train = next(iter(data_loader))
-        class_indices = {i: (y_train == i).nonzero(as_tuple=True)[0] for i in range(len(datasets_train[domain].classes))}
-
-        min_samples_per_class = min(len(indices) for indices in class_indices.values()) // num_clients
-        min_samples_per_client = min_samples_per_class * 2 
-
-        for client_id in range(num_clients):
-            class_ids = get_class_ids(client_id, len(datasets_train[domain].classes))
-            chosen_indices = []
-            for class_id in class_ids:
-                available_indices = [idx for idx in class_indices[class_id] if idx not in used_indices[domain]]
-                selected_indices = np.random.choice(available_indices, min_samples_per_class, replace=False)
-                used_indices[domain].update(selected_indices)
-                chosen_indices.extend(selected_indices)
-            
-            client_data_train[client_id].append((x_train[chosen_indices], y_train[chosen_indices]))
-
-    test_loader = DataLoader(dataset_test, batch_size=len(dataset_test), shuffle=False)
-    client_data_test = next(iter(test_loader))
-    for client_id in range(8):
-        print([f"Time ID {time_id}: Labels {torch.unique(labels, return_counts=True)}" for time_id, (data, labels) in enumerate(client_data_train[client_id])])
-
-    for i in range(3):
-        total_samples = sum(len(client_data_train[client][i][0]) for client in client_data_train)
-        print(f"Total samples across all clients and time_ids: {total_samples}")
-
-    check_for_image_reuse(client_data_train)
-    return client_data_train, client_data_test
 
 def Class_IID(dataset_train, dataset_test, samples_per_label, num_clients=20, original_clients=100):
     samples_per_label = int(60000 / 5 / num_clients / 2)
