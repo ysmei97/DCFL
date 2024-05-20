@@ -33,7 +33,7 @@ Please download packages via `pip install -r requirements.txt` or below
 ## Dataset
 
 For the MNIST, Fashion-MNIST, and CIFAR-10 datasets, they can all be downloaded through torchvision.datasets. You don't need to do anything! 
-For the PACS dataset, please refer to the official download link in the original PACS dataset paper [https://dali-dl.github.io/project_iccv2017.html](https://dali-dl.github.io/project_iccv2017.html).
+For the PACS dataset, please refer to the official webpage of [PACS dataset](https://dali-dl.github.io/project_iccv2017.html).
 
 ## Folder Structure
 ```
