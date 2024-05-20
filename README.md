@@ -73,7 +73,9 @@ DCFL/
 python CFL_CD.py --device='cuda:0' --framework='CFL_CD' --task='Class_IID' --dataset='MNIST'
 ```
 
+## Acknowledgement
 
+The original implementations of DDPM and UNet are sourced from [labml_nn](https://nn.labml.ai/diffusion/ddpm/index.html).
 
 
 
