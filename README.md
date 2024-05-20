@@ -4,6 +4,14 @@ NeurIPS 2024, Submission 5599
 
 -----------------------------------------------------------------------------------------------
 
+## Continual Federated Learning Scenarios
+
+![overview](Fig/CFL_Scenarios.png)
+
+## Continual Federated Learning with Conditional Diffusion Models as Replay
+
+![overview](Fig/FL_Diffusion.png)
+
 ## Prerequisites
 Please download packages via `pip install -r requirements.txt` or below
 ```
