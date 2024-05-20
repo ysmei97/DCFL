@@ -37,7 +37,7 @@ DCFL/
         └─── PACS/ -- Put the downloaded PACS dataset here
 │
 └─── MNIST/
-    │   {args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}.npy -- saved results here
+    │   {args.task}_CFL_{args.dataset}_{args.framework}.npy -- saved results here
     └─── model/
         │   Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth -- saved models here
 
