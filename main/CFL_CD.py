@@ -314,7 +314,7 @@ if __name__ == '__main__':
     else:
         accuracy_matrix = CFL_CD.Diffusion()
         
-    file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}.npy'
+    file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/{args.task}_CFL_{args.dataset}_{args.framework}.npy'
     np.save(file_name, accuracy_matrix)
 
 
