@@ -2,6 +2,11 @@
 
 NeurIPS 2024, Submission 5599
 
+---
+
+[![python](https://img.shields.io/badge/-Python_3.8-306998?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3817/)
+[![BSD 3-Clause License](https://img.shields.io/badge/license-MIT-750014.svg)](https://github.com/PurdueDigitalTwin/MACP/blob/master/LICENSE)
+
 -----------------------------------------------------------------------------------------------
 
 ## Three Continual Federated Learning Scenarios
