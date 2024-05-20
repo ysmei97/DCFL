@@ -10,7 +10,7 @@ NeurIPS 2024, Submission 5599
 
 -----------------------------------------------------------------------------------------------
 
-## ♻️ Three Continual Federated Learning Scenarios
+## 🌎 Three Continual Federated Learning Scenarios
 
 ![overview](Fig/CFL_Scenarios.png)
 
@@ -18,13 +18,13 @@ NeurIPS 2024, Submission 5599
 - **Class Incremental Non-IID:** Clients have a non-identical class distribution, with classes incrementing over time.
 - **Domain Incremental:** Clients data domain changes over time.
 
-## Our Framework
+## 🔥 Our Framework
 
 ![overview](Fig/FL_Diffusion.png)
 
 Each client has a target model and a diffusion model, both trained on the same dataset, consisting of the previous time period's real and synthetic data. The target model is uploaded to the server for aggregation, while the diffusion model remains local to prevent privacy leakage. The trained diffusion model will generate synthetic data encompassing all previously acquired knowledge.
 
-## Prerequisites
+## 🖥️ Prerequisites
 Please download packages via `pip install -r requirements.txt` or below
 ```
 * python == 3.10.12
@@ -36,12 +36,12 @@ Please download packages via `pip install -r requirements.txt` or below
 * torchvision==0.17.2
 ```
 
-## Dataset
+## 📚 Dataset
 
 For the MNIST, Fashion-MNIST, and CIFAR-10 datasets, they can all be downloaded through torchvision.datasets. You don't need to do anything! 
 For the PACS dataset, please refer to the official webpage of [PACS dataset](https://dali-dl.github.io/project_iccv2017.html).
 
-## Folder Structure
+## 🗂️ Folder Structure
 ```
 DCFL/
 │   README.md
@@ -74,12 +74,12 @@ DCFL/
 
 - `MNIST/`, `FashionMNIST/`, `CIFAR10/`, and `PACS/` are used to save training results and trained models
 
-## Run Code
+## 🏃‍♂️‍➡️ Run Code
 ```
 python CFL_CD.py --device='cuda:0' --framework='CFL_CD' --task='Class_IID' --dataset='MNIST'
 ```
 
-## Acknowledgement
+## 🙏 Acknowledgement
 
 The original implementations of DDPM and UNet are sourced from [labml_nn](https://nn.labml.ai/diffusion/ddpm/index.html).
 
