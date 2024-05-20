@@ -12,7 +12,7 @@ from options import args_parser
 from load_dataset import get_dataset, Domain_NonIID, Domain_IID, Class_IID, Class_NonIID
 from models import MNIST_CNN, CIFAR10_CNN, PACS_CNN, ConditionalUNet, DenoiseDiffusion
 
-class FedAvg_with_Diffusion():
+class CFL_CD():
     def __init__(self, args, model, client_data_train, client_data_test, diffusion_models, iterations, sessions, local_epochs):
         self.args = copy.deepcopy(args)
         self.model = model
@@ -84,7 +84,7 @@ class FedAvg_with_Diffusion():
             accuracy = 100. * correct / target.size(0)
         return accuracy
     
-    def train_diffusion_model(self, diffusion_model, client_data, epochs=100):
+    def train_diffusion_model(self, diffusion_model, client_data, epochs=1000):
         data, target = client_data
         data = data.float().to(self.args.device); target = target.float().to(self.args.device)
         data_loader = torch.utils.data.DataLoader(list(zip(data, target)), batch_size=32, shuffle=True)
@@ -190,14 +190,14 @@ class FedAvg_with_Diffusion():
                 test_accuracy_ClassIID = self.test_client_classIID(self.client_data_test, global_model)
                 print(f"Iteration: {ite} - Appeared Test Acc: {test_accuracy_ClassIID:.2f}%")
                 accuracy_matrix_ClassIID.append(test_accuracy_ClassIID)
-                # file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}_NumClients_{args.client_number}_ClassIID.npy'
-                # np.save(file_name, accuracy_matrix_ClassIID)
+                file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}_NumClients_{args.client_number}_ClassIID.npy'
+                np.save(file_name, accuracy_matrix_ClassIID)
                 
             test_accuracy = self.test_client(self.client_data_test, global_model)
             accuracy_matrix.append(test_accuracy)
             print(f"Iteration: {ite} - Test Acc: {test_accuracy:.2f}%")
-            CNN_file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
-            Diffusion_file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
             torch.save(global_model.state_dict(), CNN_file_name)
             torch.save(diffusion_models[0].eps_model.state_dict(), Diffusion_file_name)
         return accuracy_matrix
@@ -263,16 +263,16 @@ class FedAvg_with_Diffusion():
             test_accuracy_Domain_IID = self.test_client(data_test_appeared_domains, global_model)
             print(f"Iteration: {ite} - Appeared Test Acc: {test_accuracy_Domain_IID:.2f}%")
             accuracy_matrix_DomainIID.append(test_accuracy_Domain_IID)
-            file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}-3_DomainIID.npy'
+            file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}_DomainIID.npy'
             np.save(file_name, accuracy_matrix_DomainIID)
                 
             test_accuracy = self.test_client(self.client_data_test, global_model)
             accuracy_matrix.append(test_accuracy)
             print(f"Iteration: {ite} - Test Acc: {test_accuracy:.2f}%")
-            # CNN_file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
-            # Diffusion_file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
-            # torch.save(global_model.state_dict(), CNN_file_name)
-            # torch.save(diffusion_models[0].eps_model.state_dict(), Diffusion_file_name)
+            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            torch.save(global_model.state_dict(), CNN_file_name)
+            torch.save(diffusion_models[0].eps_model.state_dict(), Diffusion_file_name)
         return accuracy_matrix
 
 
@@ -314,13 +314,13 @@ if __name__ == '__main__':
         eps_model = eps_model.to(args.device)
         diffusion_models[client_id] = DenoiseDiffusion(eps_model=eps_model, n_steps=1000, device=args.device)
     
-    CFL_Diffusion = FedAvg_with_Diffusion(args, model, client_data_train, client_data_test, diffusion_models, iterations=iterations, sessions=sessions, local_epochs=5)
+    CFL_CD = CFL_CD(args, model, client_data_train, client_data_test, diffusion_models, iterations=iterations, sessions=sessions, local_epochs=5)
     if args.task == '4Domain_IID_C2': 
-       accuracy_matrix = CFL_Diffusion.Domain_Diffusion() 
+       accuracy_matrix = CFL_CD.Domain_Diffusion() 
     else:
-        accuracy_matrix = CFL_Diffusion.Diffusion()
+        accuracy_matrix = CFL_CD.Diffusion()
         
-    # file_name = f'/home/yongsheng/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}-3.npy'
-    # np.save(file_name, accuracy_matrix)
+    file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}.npy'
+    np.save(file_name, accuracy_matrix)
 
 
