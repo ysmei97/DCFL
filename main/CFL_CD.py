@@ -187,14 +187,14 @@ class CFL_CD():
                 test_accuracy_ClassIID = self.test_client_classIID(self.client_data_test, global_model)
                 print(f"Iteration: {ite} - Appeared Test Acc: {test_accuracy_ClassIID:.2f}%")
                 accuracy_matrix_ClassIID.append(test_accuracy_ClassIID)
-                file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}_NumClients_{args.client_number}_ClassIID.npy'
+                file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/{args.task}_CFL_{args.dataset}_{args.framework}_NumClients_{args.client_number}_ClassIID.npy'
                 np.save(file_name, accuracy_matrix_ClassIID)
                 
             test_accuracy = self.test_client(self.client_data_test, global_model)
             accuracy_matrix.append(test_accuracy)
             print(f"Iteration: {ite} - Test Acc: {test_accuracy:.2f}%")
-            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
-            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
             torch.save(global_model.state_dict(), CNN_file_name)
             torch.save(diffusion_models[0].eps_model.state_dict(), Diffusion_file_name)
         return accuracy_matrix
@@ -257,14 +257,14 @@ class CFL_CD():
             test_accuracy_Domain_IID = self.test_client(data_test_appeared_domains, global_model)
             print(f"Iteration: {ite} - Appeared Test Acc: {test_accuracy_Domain_IID:.2f}%")
             accuracy_matrix_DomainIID.append(test_accuracy_Domain_IID)
-            file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/CD_{args.task}_CFL_{args.dataset}_{args.framework}_DomainIID.npy'
+            file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/{args.task}_CFL_{args.dataset}_{args.framework}_DomainIID.npy'
             np.save(file_name, accuracy_matrix_DomainIID)
                 
             test_accuracy = self.test_client(self.client_data_test, global_model)
             accuracy_matrix.append(test_accuracy)
             print(f"Iteration: {ite} - Test Acc: {test_accuracy:.2f}%")
-            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
-            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CD_Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            CNN_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/CNN_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
+            Diffusion_file_name = f'/home/liangqiy/Desktop/CFL_Diffusion/{args.dataset}/model/Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth'
             torch.save(global_model.state_dict(), CNN_file_name)
             torch.save(diffusion_models[0].eps_model.state_dict(), Diffusion_file_name)
         return accuracy_matrix
