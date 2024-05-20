@@ -46,7 +46,6 @@ DCFL/
     │   load_dataset.py
     │   models.py
     │   options.py
-    │
     └─── data/
         └─── PACS/ -- Put the downloaded PACS dataset here
 │
@@ -54,6 +53,7 @@ DCFL/
     │   {args.task}_CFL_{args.dataset}_{args.framework}.npy -- saved results here
     └─── model/
         │   Diffusion_{args.task}_CFL_{args.dataset}_{args.framework}.pth -- saved models here
+│
 └─── FashionMNIST/
 └─── CIFAR10/
 └─── PACS/
