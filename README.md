@@ -8,9 +8,15 @@ NeurIPS 2024, Submission 5599
 
 ![overview](Fig/CFL_Scenarios.png)
 
+- **Class Incremental IID:** Clients have an identical class distribution, with classes incrementing over time.
+- **Class Incremental Non-IID:** Clients have a non-identical class distribution, with classes incrementing over time.
+- **Domain Incremental:** Clients data domain changes over time.
+
 ## Our Framework
 
 ![overview](Fig/FL_Diffusion.png)
+
+Each client has a target model and a diffusion model, both trained on the same dataset, consisting of the previous time period's real and synthetic data. The target model is uploaded to the server for aggregation, while the diffusion model remains local to prevent privacy leakage. The trained diffusion model will generate synthetic data encompassing all previously acquired knowledge.
 
 ## Prerequisites
 Please download packages via `pip install -r requirements.txt` or below
